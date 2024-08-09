@@ -1,0 +1,485 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+    margin: 0;
+    padding: 10;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+:root {
+    --background-color1: #884483;
+    --background-color2: #f5e1ee;
+    --background-color3: #f5e1ee;
+    --background-color4: #f5e1ee;
+    --primary-color: #884483;
+    --secondary-color: #884483;
+    --Border-color: #884483;
+    --one-use-color: #884483;
+    --two-use-color: #884483;
+}
+
+body {
+    background-color:#f5e1ee;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+header {
+    height: 70px;
+    width: 100vw;
+    padding: 0 30px;
+    background-color: var(--background-color1);
+    position: fixed;
+    z-index: 100;
+    box-shadow: 1px 1px 15px rgba(231, 161, 253, 0.089);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 900;
+    color: rgb(255, 255, 255);
+}
+
+.icn {
+    height: 30px;
+}
+
+.menuicn {
+    cursor: pointer;
+}
+
+.logosec {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logosec {
+    gap: 60px;
+}
+
+.message {
+    gap: 40px;
+    position: relative;
+    cursor: pointer;
+}
+
+.circle {
+    height: 7px;
+    width: 7px;
+    position: absolute;
+    background-color: #fa7bb49a;
+    border-radius: 50%;
+    left: 19px;
+    top: 8px;
+}
+
+.dp {
+    height: 40px;
+    width: 40px;
+    background-color: #884483;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.main-container {
+    display: flex;
+    width: 100vw;
+    position: relative;
+    top: 70px;
+    z-index: 1;
+}
+
+.dpicn {
+    height: 42px;
+}
+
+.main {
+    height: calc(100vh - 70px);
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 40px 30px 30px 30px;
+}
+
+.main::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(to bottom, rgba(78, 0, 85, 0.308), rgb(50, 0, 25));
+}
+
+.main::-webkit-scrollbar {
+    width: 5px;
+}
+
+.main::-webkit-scrollbar-track {
+    background-color: #9e9e9eb2;
+}
+
+.box-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.nav {
+    min-height: 91vh;
+    width: 250px;
+    background-color: var(--background-color2);
+    position: absolute;
+    top: 0px;
+    left: 00;
+    box-shadow: 1px 1px 10px rgba(189, 248, 189, 0.825);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 20px 0 50px 10px;
+}
+
+.navcontainer {
+    height: calc(100vh - 70px);
+    width: 250px;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all 0.5s ease-in-out;
+}
+
+.navcontainer::-webkit-scrollbar {
+    display: none;
+}
+
+.navclose {
+    width: 70px;
+}
+
+.nav-option {
+    width: 250px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 30px 0 20px;
+    gap: 20px;
+    transition: all 0.1s ease-in-out;
+}
+
+.nav-option:hover {
+    border-left: 5px solid #f5e1ee;
+    background-color: #f5e1ee;
+    cursor: pointer;
+}
+
+.nav-img {
+    height: 30px;
+}
+
+.nav-upper-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.option1 {
+    border-left: 5px solid #00580caf;
+    background-color: var(--Border-color);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.option1:hover {
+    border-left: 5px solid #884483;
+    background-color: var(--Border-color);
+}
+
+.rectangle-box , .rectangl-box{
+  background-color: #ffffff; 
+  border: 2px solid #884483;
+  border-radius: 10px;
+  padding: 20px;
+  padding-right: 10px;
+  text-align: center;
+  margin: 40px; 
+}
+.container , .containe{
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 30px;
+}
+
+.add-exam {
+  margin-bottom: 20px;
+}
+
+.add-exam h2 {
+  color: #884483;
+}
+
+.add-exam label {
+  display: block;
+  margin-top: 10px;
+}
+
+.add-exam input,.add-exam select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-exam button {
+  background-color: #884483;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10%;
+}
+
+.schedule {
+  margin-top: 20px;
+}
+
+.schedule h2 {
+  color: #884483;
+}
+
+.schedule {
+  margin-top: 20px;
+}
+
+.schedule h2 {
+  color: #884483;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+#schedule-table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+#schedule-table th,
+#schedule-table td {
+  padding: 12px;
+  border: 2px solid #884483;
+  text-align: center;
+  white-space: nowrap; 
+}
+
+#schedule-table th {
+  background-color: #f5e1ee;
+  color: #884483;
+}
+
+#schedule-table td {
+  background-color: #fff;
+  color: #884483;
+}
+
+#schedule-table tbody tr:nth-child(even) {
+  background-color: #f5e1ee;
+}
+
+#schedule-table th:not(:first-child),
+#schedule-table td:not(:first-child) {
+  padding-left: 20px; 
+}
+
+#schedule-table th:last-child,
+#schedule-table td:last-child {
+  border-right: 2px solid #884483;
+  padding-right: 20px; 
+}
+
+#schedule-table button {
+  background-color: #884483;
+  color: #fff;
+  border: none;
+  border-radius: 2%;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: 0.3s;
+
+}
+
+#schedule-table button:hover {
+  background-color:#884483;
+}
+#clear-table-btn {
+  background-color:#884483;
+  color: #fff;
+  padding: 10px 15px;
+  cursor: pointer;
+  border: none;
+  border-radius: 10%;
+  margin-top: 50px;
+  transition: 0.3s;
+}
+
+#clear-table-btn:hover {
+  background-color:#884483;
+}
+
+.form-label,.nav-option h3 {
+  font-size: 18px; 
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #884483; 
+  text-decoration: none;
+}
+
+
+@media only screen and (max-width: 768px) {
+  
+  *{
+    margin: 0;
+    padding: 10;
+  }
+  .main-container {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  header {
+      width: 200%;
+  }
+
+  .rectangle-box,
+  .rectangl-box {
+      width: 100%;
+      margin: 10px 0;
+  }
+
+  .add-exam,
+  .schedule {
+      width: 100%;
+      padding: 10px;
+  }
+
+  .add-exam h2,
+  .schedule h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+  }
+
+  .add-exam label,
+  .schedule label {
+      margin-top: 8px;
+  }
+
+  .add-exam input,
+  .add-exam select,
+  .schedule input,
+  .schedule select {
+      width: calc(100% - 20px);
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+  }
+
+  .add-exam button,
+  #add-exam-btn,
+  #clear-table-btn {
+      width: 100%;
+      margin-top: 15px;
+  }
+
+  #schedule-container {
+      width: 100%;
+      overflow-x: auto;
+  }
+
+  #schedule-table {
+      min-width: 600px;
+      width: max-content;
+      margin-top: 10px;
+      border-collapse: collapse;
+  }
+
+  #schedule-table th,
+  #schedule-table td {
+      padding: 12px;
+      border: 2px solid #884483;
+      text-align: center;
+      white-space: nowrap;
+  }
+
+  #schedule-table th:not(:first-child),
+  #schedule-table td:not(:first-child) {
+      padding-left: 20px;
+  }
+
+  #schedule-table th:last-child,
+  #schedule-table td:last-child {
+      border-right: 2px solid #884483;
+      padding-right: 20px;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .nav-img {
+      height: 25px;
+  }
+  .nav-option {
+      gap: 30px;
+  }
+  .nav-option h3 {
+      font-size: 15px;
+  }
+  *{
+    margin: 0;
+    padding: 10;
+  }
+}
+
+
+@media screen and (max-width: 850px) {
+  .nav-img {
+      height: 30px;
+  }
+  .nav-option {
+      gap: 30px;
+  }
+  .nav-option h3 {
+      font-size: 20px;
+  }
+  .navcontainer {
+      width: 100vw;
+      position: absolute;
+      transition: all 0.6s ease-in-out;
+      top: 0;
+      left: -100vw;
+  }
+  .nav {
+      width: 100%;
+      position: absolute;
+  }
+  .navclose {
+      left: 00px;
+  }
+  *{
+    margin: 0;
+    padding: 10;
+  }
+}

@@ -1,0 +1,466 @@
+*{
+    padding:0px;
+    margin:0px; 
+}
+
+body,html{
+    font-family:Roboto,sans-serif,arial;
+    background:#f5e1ee;
+}
+
+.width-100{
+    width: 100%;
+    float:left;
+
+}
+
+nav,
+.nav-links {
+  display: flex;
+}
+
+nav {
+  justify-content: space-around;
+  align-items: center;
+  height: 17vh;
+}
+
+.nav-links {
+  gap: 2rem;
+  list-style: none;
+  font-size: 1.3rem;
+  float: right;
+}
+
+a {
+  color:#884483;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 1rem;;
+}
+
+.container{
+    width:1500px;
+    margin:0px auto;
+
+}
+
+.top-header{
+    background:#884483;
+    padding:5px 0px;
+    border-bottom: 1px solid #3131315e;
+}
+
+.news-list{
+    background:#f5e1ee;
+    color:#884483;
+    padding: 6px;
+    font-size:20px;
+
+}
+
+.headquote{
+    font-size: 18px;
+    color: #fff;
+    width: 80%;
+}
+
+.header-menu{
+    position: relative;
+    box-shadow: 0px 2px 5px #00000036;
+}
+
+.logo{
+    width: fit-content;
+    float: left;
+}
+
+.main-menu a{
+    list-style: none;
+    float: right;
+    margin-top: 20px;
+}
+
+.main-menu li{
+    float: left;
+    padding: 12px 15px;
+}
+
+.slider-width{
+    width:100%;
+    height: auto;
+}
+
+.margin-top-50{
+    margin-top: 50px;
+}
+
+.width-33{
+    width: 33%;
+    float: left;
+}
+
+.latest-news{
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color:white;
+    padding: 20px;
+    height: 350px;
+    margin-bottom: 30px;
+}
+
+.heading-sect{
+    width: 100%;
+    float: left;
+    border-bottom: 1px solid #cfcfcf;
+    padding-bottom: 0px;
+    margin: 0px;
+    margin-bottom: 15px;
+    border: 1px solid #cfcfcf;
+    padding-top:15px;
+    padding-left:15px;
+    background: #884483;
+    color:white;
+}
+
+.head-title{
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+    font-weight: 600;
+    padding-bottom: 5px;
+}
+
+.latest-news-ul{
+    padding: 0px;
+    list-style: none;
+    line-height: 40px;
+}
+
+.event-list{
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color:white;
+    padding: 20px;
+    height: 350px;
+    margin-bottom: 30px;
+}
+
+
+.upcoming-event-list{
+    padding: 0px;
+    list-style: none;
+}
+
+.upcoming-event-list li{
+    width:100%;
+    float: left;
+    margin-bottom: 15px;
+}
+
+.event-date{
+    background: #884483;
+    width: 30px;
+    float: left;
+    text-align: center;
+    font-size: 14px;
+    color:#fff;
+    padding: 8px;
+    margin-right: 10px;
+}
+
+.notice-board{
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color:white;
+    padding: 20px;
+    height: 350px;
+    margin-bottom: 30px;
+}
+
+.notice-board-list{
+    padding: 0px;
+    list-style: none;
+}
+
+.notice-board-list li{
+    width: 100%;
+    float:left;
+    margin-bottom: 28px;
+}
+
+.our-principal{
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color:white;
+    padding: 20px;
+    height: 350px;
+    margin-bottom: 30px;
+}
+
+.useful-info-ul{
+    list-style: none;
+}
+
+.useful-info-ul li{
+    margin-bottom: 15px;
+    border-bottom: 1px solid #d7d7d7;
+    padding-bottom: 15px;
+}
+
+.gov-sec-style{
+    margin-bottom: 30px;
+    border-bottom: 1px solid #d7d7d7;
+    padding-bottom: 30px;
+
+
+}
+.governor-name{
+    font-size: 16px;
+    color: black;
+    font-weight: bold;
+    padding-left: 10px;
+    margin-top: 6px;
+
+}
+
+.governor-designation{
+    font-size: 16px;
+    color: black;
+    padding-left: 10px;
+    margin-top: 6px;
+
+}
+
+.governor-image{
+    width: 100%;
+}
+
+.width-40{
+    width: 40%;
+    float: left;
+}
+
+.width-60{
+    width: 60%;
+    float: left;
+}
+
+.about-us{
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color:white;
+    padding: 20px;
+    height: 350px;
+    margin-bottom: 30px;
+    
+}
+
+.certificate{
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color:white;
+    padding: 20px;
+    height: 350px;
+    margin-bottom: 30px;
+    
+}
+
+.gallery-head-style{
+    font-size: 28px;
+    color: #4b4848;
+    margin-bottom: 5px;
+    background: #f5e1ee;
+    box-align: center;
+    text-align: center;
+    padding: 2px 0px;
+
+}
+
+.width-25{
+    width: 25%;
+    float: left;
+
+}
+.gallery-img{
+    height: 250px;
+    width: auto;
+
+}
+
+.recruiter-head-style{
+    font-size: 28px;
+    color: #4b4848;
+    margin-bottom: 5px;
+}
+
+.recruiter-marquee{
+    height: 100px;
+}
+
+.recruiter-marquee img{
+    height: 8px;
+
+}
+
+.footer{
+    background:#884483;
+    padding: 50px 0px;
+    text-align: center;
+
+    }
+
+.quicklink-heading{
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 10px;
+
+}
+
+.quicklink-menu{
+    list-style: none;
+    padding-left: 10px;
+
+}
+
+.quicklink-menu li a{
+    color: #fff;
+    line-height: 2.5;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.get-in-touch{
+    list-style: none;
+    padding-left: 10px;
+    
+}
+
+.get-in-touch li i{
+    color: #ed372c;
+    font-size: 20px;
+}
+
+.get-in-touch li{
+    color: #fff;
+    line-height: 2.5;
+    font-size: 15px;
+
+}
+
+.footer-e-mail{
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+
+}
+
+.footer-website{
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+
+}
+
+
+
+.footer2-bacbor{
+    background: #82457e;
+    padding: 8px;
+  
+    border-top: 1px solid #9d4b98;
+
+}
+
+.footer2-content{
+    font-size: 14px;
+    color: white;
+    text-align: center;
+}
+.menu-icon {
+    display: none; 
+    cursor: pointer;
+    top: 10px; 
+    right: 10px; 
+    font-size: 24px;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .menu-icon {
+        display: block;
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+    }
+}
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+
+    .container {
+        width: 100%; 
+    }
+
+    .logo img {
+        width: 100%; 
+    }
+
+    .main-menu {
+        display: none; 
+    }
+
+    .nav-links {
+        flex-direction: column; 
+    }
+
+    .nav-links li {
+        text-align: center; 
+        margin: 10px 0; 
+    }
+
+    .slider-width,
+    .gallery-img {
+        width: 100%; 
+        height: auto;
+    }
+
+    .width-33 {
+        width: 100%; 
+        margin-bottom: 20px; 
+    }
+
+    .footer {
+        padding: 30px 0; 
+    }
+
+    .width-25 {
+        width: 100%; 
+        margin-bottom: 20px;
+    }
+}

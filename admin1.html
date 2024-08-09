@@ -1,0 +1,103 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+
+<head> 
+	<meta charset="UTF-8"> 
+	<meta http-equiv="X-UA-Compatible"
+		content="IE=edge"> 
+	<meta name="viewport"
+		content="width=device-width, 
+				initial-scale=1.0"> 
+	<title>Admin</title> 
+	<link rel="stylesheet"
+		href="admin1.css"> 
+	<link rel="stylesheet"
+		href="responsive.css"> 
+</head> 
+
+<body> 
+	<header> 
+
+		<div class="logosec"> 
+			
+			<img src= 
+"https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
+				class="icn menuicn"
+				id="menuicn"
+				alt="menu-icon"> 
+                <div class="logo">Exam Schedule</div> 
+		</div> 					
+			<div class="dp"> 
+			<img src= 
+"https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
+					class="dpicn"
+					alt="dp"> 
+			</div> 
+		</div> 
+
+	</header> 
+	<div class="main-container"> 
+		<div class="navcontainer navclose"> 
+			<nav class="nav"> 
+				<div class="nav-upper-options"> 
+					<a href="admin.html" class="nav-option option1">
+						<img src="assets/dashboard.png" class="nav-img" alt="dashboard"> 
+						<h3>Dashboard</h3> 
+					</a>
+					
+
+					<a href="studlist.php" class="option2 nav-option"> 
+						<img src="assets/studentlist2.png" class="nav-img" alt="institution"> 
+						<h3> Student List</h3> 
+                    </a> 
+					<div class="nav-option option5"> 
+						<img src= 
+"assets/subjects.png"
+							class="nav-img"
+							alt="blog"> 
+						<h3>Subjects</h3> 
+					</div> 
+
+					<div class="nav-option option6"> 
+						<img src= 
+"assets/settings.png"
+							class="nav-img"
+							alt="settings"> 
+						<h3> Settings</h3> 
+					</div> 
+					<a href="login.html" class="option2 nav-option"> 
+						<img src="assets/logout.png" class="nav-img" alt="institution"> 
+						<h3>Logout</h3> 
+                    </a> 
+
+				</div> 
+			</nav> 
+        </div>  
+		
+            <div class="batch-box">
+                <h2 class="topic">Generate Batch</h2>
+                <div class="input-container">
+                    <label for="department">Department:</label>
+                    <input type="text" id="department" name="department" placeholder="Enter Department">
+                </div>
+                <div class="input-container">
+                    <label for="semester">Semester:</label>
+                    <input type="text" id="semester" name="semester" placeholder="Enter Semester">
+                </div>
+                <div class="input-container">
+                    <label for="totalStudents">Total Students:</label>
+                    <input type="number" id="totalStudents" name="totalStudents" placeholder="Enter Total Students">
+                </div>
+                <div class="input-container">
+                    <label for="studentsPerBatch">Students per Batch:</label>
+                    <input type="number" id="studentsPerBatch" name="studentsPerBatch" placeholder="Enter Students per Batch">
+                </div>
+                <button class="generate-button" onclick="generateBatch()">Generate Batch</button>
+            </div>   
+        </div>
+</div>
+
+	<script src="./trial3.js"></script> 
+</form>
+</body> 
+</html>

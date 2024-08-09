@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch Generator</title>
+
+<link rel="stylesheet" href="admin1.css"> 
+<style>
+    :root {
+  --primary-color: #884483;
+  --secondary-color: #f5e1ee;
+  --background-color: #f5e1ee;
+  --button-hover-color: #571052;
+  --border-color: #884483;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: var(--primary-color);
+  color: white;
+}
+.logo {
+  font-size: 24px;
+}
+
+.main-container {
+  display: flex;
+}
+
+.navcontainer {
+  width: 250px;
+  background-color: var(--secondary-color);
+  padding: 20px 0;
+}
+
+.nav {
+  min-height: 91vh; 
+  width: 250px; 
+  background-color: var(--background-color2); 
+  position: absolute; 
+  top: 0px; 
+  left: 0; 
+  box-shadow: 1px 1px 10px rgba(189, 248, 189, 0.825); 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+  overflow: hidden; 
+  padding: 20px 0 170px 10px; 
+}
+
+
+.nav-option {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: black;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+#batchForm {
+  background-color:  #d2a0c1;
+    border-radius: 20px;
+    box-shadow: 3px 3px 10px rgb(188, 188, 188);
+    padding: 20px;
+    margin: 20px auto 130px; 
+    margin-top: 2%;
+    text-align: center;
+    max-width: calc(100% - 30px); 
+    width: 40%;
+  
+}
+#batchFrom{
+  
+    border-radius: 20px;
+    box-shadow: 3px 3px 10px rgb(188, 188, 188);
+    padding: 20px;
+    margin: 20px auto; 
+    text-align: center;
+    max-width: 200px;
+}
+
+.input-container {
+    margin-bottom: 4px;
+}
+
+.input-container label {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 2px;
+}
+
+input[type="text"],
+input[type="number"]
+ {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 700px;
+  padding:10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+
+    background-color: #884483;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 7px;
+    margin-bottom: 0;
+
+}
+
+input[type="submit"]:hover {
+  background-color: var(--button-hover-color);
+}
+
+.batches-container {
+  margin-top: 20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+}
+
+th, td {
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  text-align: center;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+
+</style>
+</head>
+
+
+<body>
+  <header> 
+    <div class="logosec"> 
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png" class="icn menuicn" id="menuicn" alt="menu-icon"> 
+        <div class="logo">Exam Schedule</div> 
+    </div> 
+    <div class="dp"> 
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png" class="dpicn" alt="dp"> 
+    </div> 
+</header>
+<div class="main-container"> 
+  <div class="navcontainer"> 
+      <nav class="nav"> 
+          <a href="./admin.html" class="nav-option"> 
+              <img src="assets/dashboard.png" class="nav-img" alt="dashboard"> 
+              <h3> Dashboard</h3> 
+          </a> 
+          <a href="./studlist.php" class="nav-option"> 
+              <img src="assets/studentlist2.png" class="nav-img" alt="institution"> 
+              <h3> Student List</h3> 
+          </a>
+          <a href="./reg.php" class="nav-option"> 
+              <img src="assets/subjects.png" class="nav-img" alt="blog"> 
+              <h3>Regulation</h3> 
+          </a> 
+          <a href="trial3_display.php" class="nav-option option6"> 
+						<img src="assets/batchDetails.png" class="nav-img" alt="settings"> 
+						<h3>Batch Detail</h3> 
+					</a> 
+          <a href="login.html" class="nav-option"> 
+              <img src="assets/logout.png" class="nav-img" alt="institution"> 
+              <h3>Logout</h3> 
+          </a> 
+      </nav> 
+  </div> 
+  <form id="batchForm">
+    <br>
+    <h2 class="topic">Generate Batch</h2>
+    <br>
+    <div class="input-container">
+    <label for="department">Department:</label>
+    <input type="text" id="department" name="department" required placeholder="Enter Department"><br><br>
+    </div>
+    <div class="input-container">
+    <label for="semester">Semester:</label>
+    <input type="number" id="semester" name="semester" required placeholder="Enter Semester" ><br><br>
+    </div>
+    <div class="input-container">
+    <label for="totalStudents">Total Number of Students:</label>
+    <input type="number" id="totalStudents" name="totalStudents" required placeholder="Enter Total Students"><br><br>
+    </div>
+    <div class="input-container">
+    <label for="studentsPerBatch">Students Per Batch:</label>
+    <input type="number" id="studentsPerBatch" name="studentsPerBatch" required placeholder="Enter Students per Batch"><br><br>
+    </div>
+    <div>
+    <input type="submit" value="Generate Batches">
+    </div>
+
+</form>
+</div>
+  <div id="result"></div>
+
+  <script src="./trial3.js"></script>
+  
+</body>
+</html>

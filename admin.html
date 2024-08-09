@@ -1,0 +1,151 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+
+<head> 
+	<meta charset="UTF-8"> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	<title>Admin</title> 
+	<link rel="stylesheet" href="admin.css"> 
+	<link rel="stylesheet" href="responsive.css">
+</head> 
+<style>
+	 .report-topic-heading {
+        display: flex;
+        justify-content: space-between;
+    }
+    .report-topic-heading h3 {
+        margin-bottom: 10px;
+    }
+    .item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .item p {
+        margin: 0;
+    }
+</style>
+<body>
+	<header> 
+		<div class="logosec"> 
+			<img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png" class="icn menuicn" id="menuicn" alt="menu-icon"> 
+			<div class="logo">Exam Schedule</div> 
+		</div> 
+		<div class="dp"> 
+			<img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png" class="dpicn" alt="dp"> 
+		</div> 
+	</header> 
+	<div class="main-container"> 
+		<div class="navcontainer"> 
+			<nav class="nav"> 
+				<div class="nav-upper-options"> 
+					<div class="nav-option"> 
+						<img src="assets/dashboard.png" class="nav-img" alt="dashboard"> 
+						<h3> Dashboard</h3> 
+					</div> 
+					<a href="./studlist.php" class="nav-option"> 
+						<img src="assets/studentlist2.png" class="nav-img" alt="institution"> 
+						<h3> Student List</h3> 
+					</a>
+					<a href="./reg.php" class="nav-option"> 
+						<img src="assets/subjects.png" class="nav-img" alt="blog"> 
+						<h3>Regulation</h3> 
+					</a> 
+					<a href="trial3_display.php" class="nav-option"> 
+						<img src="assets/batchDetails.png" class="nav-img" alt="settings"> 
+						<h3>Batch Detail</h3> 
+					</a> 
+					<a href="login.html" class="nav-option"> 
+						<img src="assets/logout.png" class="nav-img" alt="institution"> 
+						<h3>Logout</h3> 
+                    </a> 
+				</div> 
+			</nav> 
+		</div> 
+		<div class="main"> 
+			<div class="box-container"> 
+				<a href="display.php" class="box box1"> 
+					<div class="text"> 
+						<h2 class="topic-heading"></h2>
+						<h2 class="topic">View Schedule</h2>
+					</div> 
+					<img src="assets/eye.png" alt="Views">  
+			    </a>
+				<a href="input.html" class="box box2">
+					<div class="text"> 
+						<h2 class="topic-heading"></h2> 
+						<h2 class="topic">Generate a Schedule</h2> 
+					</div> 
+					<img src="assets/schedule2.png" alt="likes"> 
+				</a>
+				<a href="trial3.html" class="box box3"> 
+					<div class="text"> 
+						<h2 class="topic-heading"></h2> 
+						<h2 class="topic">Generate Batch</h2> 
+					</div> 
+					<img src="assets/genbatch.png" alt="published"> 
+				</a> 
+			</div> 
+			<div class="report-container"> 
+				<div class="report-header"> 
+					<h1 class="recent-Articles">Schedules Generated</h1> 
+					<button class="view">View All</button> 
+				</div> 
+				<div class="report-body"> 
+					<div class="report-topic-heading"> 
+						<h3 class="t-op">Department</h3> 
+						<h3 class="t-op">Semester</h3> 
+						<h3 class="t-op">Status</h3> 
+					</div> 
+					<div class="items"> 
+						<div class="item">
+							<p class="department">CSE</p>
+							<p class="semester">1st Semester</p>
+							<p class="status">Published</p>
+						</div>
+						<div class="item">
+							<p class="department">CSE</p>
+							<p class="semester">2nd Semester</p>
+							<p class="status">Published</p>
+						</div>
+						<div class="item">
+							<p class="department">CSE</p>
+							<p class="semester">3rd Semester</p>
+							<p class="status">Published</p>
+						</div>
+						<div class="item">
+							<p class="department">CSE</p>
+							<p class="semester">4th Semester</p>
+							<p class="status">Published</p>
+						</div>
+						<div class="item">
+							<p class="department">CSE</p>
+							<p class="semester">5th Semester</p>
+							<p class="status">Published</p>
+						</div>
+						<div class="item">
+							<p class="department">CSE</p>
+							<p class="semester">6th Semester</p>
+							<p class="status">Published</p>
+						</div>
+						<div class="item">
+							<p class="department">CSE</p>
+							<p class="semester">7th Semester</p>
+							<p class="status">Published</p>
+						</div>
+						<div class="item">
+							<p class="department">CSE</p>
+							<p class="semester">8th Semester</p>
+							<p class="status">Published</p>
+						</div>
+					</div>
+				</div>
+					
+			</div> 
+		</div> 
+	</div> 
+
+	<script src="./admin.js"></script> 
+</body> 
+</html>

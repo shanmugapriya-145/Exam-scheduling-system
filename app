@@ -1,295 +1,198 @@
 <?php
-include "partials/header.php";
 include "config/db.php";
 
-// Retrieve parameters
-$appID = isset($_GET['appID']) ? htmlspecialchars($_GET['appID']) : '';
-$appName = isset($_GET['appName']) ? htmlspecialchars($_GET['appName']) : '';
-if (!$appID) {
-    echo "<p>No Application ID provided.</p>";
-    include "partials/footer.php";
-    exit;
+$appID = $_GET['appID'] ?? '';
+$appName = $_GET['appName'] ?? '';
+$add_new = isset($_GET['add']);
+
+// Add functionality
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['save_new'])) {
+    $role = $_POST['RoleName'];
+    $resID = $_POST['ResourceID'];
+    $resName = $_POST['ResourceName'];
+    $rate = floatval($_POST['Rate']);
+    $grade = $_POST['Grade'];
+
+    // Ensure Role exists
+    $stmt = $conn->prepare("SELECT RoleName FROM Role WHERE RoleName = ?");
+    $stmt->bind_param("s", $role);
+    $stmt->execute();
+    if (!$stmt->fetch()) {
+        $stmt->close();
+        $stmt = $conn->prepare("INSERT INTO Role (RoleName, Rate) VALUES (?, ?)");
+        $stmt->bind_param("sd", $role, $rate);
+        $stmt->execute();
+    }
+    $stmt->close();
+
+    // Ensure Resource exists
+    $stmt = $conn->prepare("SELECT ResourceID FROM Resource WHERE ResourceID = ?");
+    $stmt->bind_param("i", $resID);
+    $stmt->execute();
+    if (!$stmt->fetch()) {
+        $stmt->close();
+        $stmt = $conn->prepare("INSERT INTO Resource (ResourceID, ResourceName) VALUES (?, ?)");
+        $stmt->bind_param("is", $resID, $resName);
+        $stmt->execute();
+    }
+    $stmt->close();
+
+    // Calculate efforts
+    $totalEffort = 0;
+    $dateEfforts = [];
+    foreach ($_POST as $key => $val) {
+        if (strpos($key, 'date_') === 0) {
+            $col = substr($key, 5);
+            $effort = floatval($val);
+            $dateEfforts[$col] = $effort;
+            $totalEffort += $effort;
+        }
+    }
+    $totalEffort *= 5;
+    $totalCost = $totalEffort * $rate;
+
+    // Build query dynamically
+    $columns = "ApplicationID, ApplicationName, ResourceID, ResourceName, RoleName, Grade, TotalEffort, Rate, TotalCost";
+    $values = "'$appID', '$appName', '$resID', '$resName', '$role', '$grade', '$totalEffort', '$rate', '$totalCost'";
+
+    foreach ($dateEfforts as $col => $val) {
+        $columns .= ", `$col`";
+        $values .= ", '$val'";
+    }
+
+    $conn->query("INSERT INTO master ($columns) VALUES ($values)");
+
+    header("Location: application_view.php?appID=" . urlencode($appID) . "&appName=" . urlencode($appName));
+    exit();
 }
 
-// Define weeks & mapping
+// Fetch weekly effort columns
+$colsResult = $conn->query("SHOW COLUMNS FROM master");
 $monday_columns = [];
-for ($i = 1; $i <= 53; $i++) {
-    $monday_columns[] = 'W' . str_pad($i, 2, '0', STR_PAD_LEFT);
-}
-$week_to_date = [
-    'W01'=>'30Dec','W02'=>'06Jan','W03'=>'13Jan','W04'=>'20Jan','W05'=>'27Jan',
-    'W06'=>'03Feb','W07'=>'10Feb','W08'=>'17Feb','W09'=>'24Feb','W10'=>'03Mar',
-    'W11'=>'10Mar','W12'=>'17Mar','W13'=>'24Mar','W14'=>'31Mar','W15'=>'07Apr',
-    'W16'=>'14Apr','W17'=>'21Apr','W18'=>'28Apr','W19'=>'05May','W20'=>'12May',
-    'W21'=>'19May','W22'=>'26May','W23'=>'02Jun','W24'=>'09Jun','W25'=>'16Jun',
-    'W26'=>'23Jun','W27'=>'30Jun','W28'=>'07Jul','W29'=>'14Jul','W30'=>'21Jul',
-    'W31'=>'28Jul','W32'=>'04Aug','W33'=>'11Aug','W34'=>'18Aug','W35'=>'25Aug',
-    'W36'=>'01Sep','W37'=>'08Sep','W38'=>'15Sep','W39'=>'22Sep','W40'=>'29Sep',
-    'W41'=>'06Oct','W42'=>'13Oct','W43'=>'20Oct','W44'=>'27Oct','W45'=>'03Nov',
-    'W46'=>'10Nov','W47'=>'17Nov','W48'=>'24Nov','W49'=>'01Dec','W50'=>'08Dec',
-    'W51'=>'15Dec','W52'=>'22Dec','W53'=>'29Dec'
-];
-
-// Handle POST (add/edit/delete/save)
-$edit_row_id = $_POST['edit_row_id'] ?? null;
-$add_new = isset($_POST['add_row']); // flag for add mode
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Delete row
-    if (isset($_POST['delete_row'])) {
-        $row_id = $_POST['delete_row_id'];
-        $conn->query("DELETE FROM master WHERE id='$row_id'");
-        header("Location: viewapplication.php?appID=$appID&appName=$appName");
-        exit();
-    }
-    // Save edited row
-    if (isset($_POST['save_edit'])) {
-        $row_id = $_POST['row_id'];
-        $resID = $_POST['ResourceID'];
-        $appName = $_POST['ApplicationName'];
-        $resName = $_POST['ResourceName'];
-        $role = $_POST['RoleName'];
-        $rate = floatval($_POST['Rate']);
-        $grade = $_POST['Grade'];
-
-        $totalEffort = 0;
-        $dateEfforts = [];
-        foreach ($_POST as $key => $value) {
-            if (preg_match('/^date_/', $key)) {
-                $week = substr($key, 5);
-                $col = $week_to_date[$week] ?? null;
-                if ($col) {
-                    $effort = floatval($value);
-                    $dateEfforts[$col] = $effort;
-                    $totalEffort += $effort;
-                }
-            }
-        }
-        $totalEffort *= 5;
-        $totalCost = $totalEffort * $rate;
-
-        $setClause = "ApplicationName='$appName', ResourceID='$resID', ResourceName='$resName', RoleName='$role', Grade='$grade', TotalEffort='$totalEffort', Rate='$rate', TotalCost='$totalCost'";
-        foreach ($dateEfforts as $col => $val) {
-            $setClause .= ", `$col`='$val'";
-        }
-        $sql = "UPDATE master SET $setClause WHERE id='$row_id'";
-        $conn->query($sql);
-
-        header("Location: viewapplication.php?appID=$appID&appName=$appName");
-        exit();
-    }
-    // Save new row
-    if (isset($_POST['save_new'])) {
-        $resID = $_POST['ResourceID'];
-        $resName = $_POST['ResourceName'];
-        $role = $_POST['RoleName'];
-        $rate = floatval($_POST['Rate']);
-        $grade = $_POST['Grade'];
-
-        $totalEffort = 0;
-        $dateEfforts = [];
-        foreach ($_POST as $key => $value) {
-            if (preg_match('/^date_/', $key)) {
-                $week = substr($key, 5);
-                $col = $week_to_date[$week] ?? null;
-                if ($col) {
-                    $effort = floatval($value);
-                    $dateEfforts[$col] = $effort;
-                    $totalEffort += $effort;
-                }
-            }
-        }
-        $totalEffort *= 5;
-        $totalCost = $totalEffort * $rate;
-
-        $columns = "ApplicationID, ApplicationName, ResourceID, ResourceName, RoleName, Grade, TotalEffort, Rate, TotalCost";
-        $values = "'$appID', '$appName', '$resID', '$resName', '$role', '$grade', '$totalEffort', '$rate', '$totalCost'";
-        foreach ($dateEfforts as $col => $val) {
-            $columns .= ", `$col`";
-            $values .= ", '$val'";
-        }
-        $sql = "INSERT INTO master ($columns) VALUES ($values)";
-        $conn->query($sql);
-
-        header("Location: viewapplication.php?appID=$appID&appName=$appName");
-        exit();
+while ($col = $colsResult->fetch_assoc()) {
+    if (preg_match('/^\d{Ymd}$/', $col['Field'])) {
+        $monday_columns[] = $col['Field'];
     }
 }
-
-// Pagination setup
-$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$rows_per_page = 6;
-$total_rows = $conn->query("SELECT * FROM master WHERE ApplicationID = '$appID'")->num_rows;
-$total_pages = ceil($total_rows / $rows_per_page);
-
-$start = ($page - 1) * $rows_per_page;
-$sql_page = "SELECT * FROM master WHERE ApplicationID = '$appID' LIMIT $start, $rows_per_page";
-$result_page = $conn->query($sql_page);
-$disable_all = ($total_pages <= 1);
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Application View</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
+        .button-add { background: green; color: white; padding: 5px 10px; border: none; }
+        .button-cancel { background: red; color: white; padding: 5px 10px; border: none; }
+    </style>
+</head>
+<body>
+    <h2>Application: <?= htmlspecialchars($appName) ?> (ID: <?= htmlspecialchars($appID) ?>)</h2>
 
-<!-- Header -->
-<div class="header-container">
-    <div class="header-bar">
-        <a href="homepage.php">
-            <img src="assets/header-logo.png" alt="Companylogo">
-        </a>
-        <h3>Application Name: <?php echo $appName; ?> (<?php echo $appID; ?>)</h3>
-        <div class="header-buttons">
-            <form method="post" style="display:inline;">
-                <button class="btn button-primary" name="add_row" type="submit">Add</button>
-            </form>
-            <a href="efforttable.php" class="btn button-secondary">Back</a>
-        </div>
-    </div>
-</div>
+    <a href="application_view.php?appID=<?= urlencode($appID) ?>&appName=<?= urlencode($appName) ?>&add=1">
+        <button class="button-add">Add New Row</button>
+    </a>
+    <br><br>
 
-<!-- Pagination -->
-<?php if (!$disable_all): ?>
-<div class="pagination">
-    <div class="pagination-fixed">
-        <form method="get" style="display:inline;">
-            <input type="hidden" name="appID" value="<?php echo $appID; ?>">
-            <input type="hidden" name="appName" value="<?php echo $appName; ?>">
-            <button class="pagination-btn" type="submit" name="page" value="1" <?php if ($page == 1) echo 'disabled'; ?>>&#8592;</button>
-        </form>
-        <form method="get" style="display:inline;">
-            <input type="hidden" name="appID" value="<?php echo $appID; ?>">
-            <input type="hidden" name="appName" value="<?php echo $appName; ?>">
-            <button class="pagination-btn" type="submit" name="page" value="<?php echo max(1, $page-1); ?>" <?php if ($page == 1) echo 'disabled'; ?>>Prev</button>
-        </form>
+    <table>
+        <tr>
+            <th>RoleName</th>
+            <?php foreach ($monday_columns as $week): ?>
+                <th><?= htmlspecialchars($week) ?></th>
+            <?php endforeach; ?>
+            <th>TotalEffort</th>
+            <th>Rate</th>
+            <th>TotalCost</th>
+            <th>ResourceID</th>
+            <th>ResourceName</th>
+            <th>Grade</th>
+            <th>Actions</th>
+        </tr>
+
+        <?php if ($add_new): ?>
+        <form method="post" id="addRowForm"><tr>
+            <td><input type="text" name="RoleName" id="addRoleName" required 
+                       onblur="fetchDetails('role', this.value, 'rateInput')"></td>
+
+            <?php foreach ($monday_columns as $week): ?>
+                <td><input type="number" step="0.01" name="date_<?= $week ?>" 
+                           class="effort-input" oninput="calculateEffortAndCost()" value="0"></td>
+            <?php endforeach; ?>
+
+            <td><input type="number" step="0.01" name="TotalEffort" id="totalEffort" value="0" readonly></td>
+            <td><input type="number" step="0.01" name="Rate" id="rateInput" oninput="calculateEffortAndCost()" required></td>
+            <td><input type="number" step="0.01" name="TotalCost" id="totalCost" value="0" readonly></td>
+            <td><input type="text" name="ResourceID" id="resourceID" required 
+                       onblur="fetchDetails('resource', this.value, 'resourceName')"></td>
+            <td><input type="text" name="ResourceName" id="resourceName" required></td>
+            <td>
+                <select name="Grade" required>
+                    <option value="">--Select--</option>
+                    <option value="PM">PM</option>
+                    <option value="PAT">PAT</option>
+                    <option value="PA">PA</option>
+                    <option value="A">A</option>
+                </select>
+            </td>
+            <td>
+                <button type="submit" name="save_new">Save</button>
+                <button type="button" class="button-cancel" 
+                        onclick="window.location='application_view.php?appID=<?= urlencode($appID) ?>&appName=<?= urlencode($appName) ?>'">
+                        Cancel
+                </button>
+            </td>
+        </tr></form>
+        <?php endif; ?>
+
+        <!-- Existing rows -->
         <?php
-        $max_display = 5;
-        $start_page = max(1, $page - 2);
-        $end_page = min($total_pages, $start_page + $max_display - 1);
-        if ($end_page - $start_page < $max_display - 1) {
-            $start_page = max(1, $end_page - $max_display + 1);
-        }
-        for ($i = $start_page; $i <= $end_page; $i++) {
-            echo '<form method="get" style="display:inline;">';
-            echo '<input type="hidden" name="appID" value="' . $appID . '">';
-            echo '<input type="hidden" name="appName" value="' . $appName . '">';
-            echo '<button class="pagination-btn' . ($i == $page ? ' active' : '') . '" type="submit" name="page" value="' . $i . '">' . $i . '</button>';
-            echo '</form>';
-        }
+        $result = $conn->query("SELECT * FROM master WHERE ApplicationID='$appID'");
+        while ($row = $result->fetch_assoc()):
         ?>
-        <form method="get" style="display:inline;">
-            <input type="hidden" name="appID" value="<?php echo $appID; ?>">
-            <input type="hidden" name="appName" value="<?php echo $appName; ?>">
-            <button class="pagination-btn" type="submit" name="page" value="<?php echo min($total_pages, $page+1); ?>" <?php if ($page == $total_pages) echo 'disabled'; ?>>Next</button>
-        </form>
-        <form method="get" style="display:inline;">
-            <input type="hidden" name="appID" value="<?php echo $appID; ?>">
-            <input type="hidden" name="appName" value="<?php echo $appName; ?>">
-            <button class="pagination-btn" type="submit" name="page" value="<?php echo $total_pages; ?>" <?php if ($page == $total_pages) echo 'disabled'; ?>>&#8594;</button>
-        </form>
-    </div>
-    <div class="scroll-buttons-col">
-        <button class="pagination-btn" onclick="scrollTable('left')" title="Go to first column"><<</button>
-        <button class="pagination-btn" onclick="scrollTable('right')" title="Go to last column">>></button>
-    </div>
-</div>
-<?php endif; ?>
+        <tr>
+            <td><?= htmlspecialchars($row['RoleName']) ?></td>
+            <?php foreach ($monday_columns as $week): ?>
+                <td><?= htmlspecialchars($row[$week] ?? 0) ?></td>
+            <?php endforeach; ?>
+            <td><?= htmlspecialchars($row['TotalEffort']) ?></td>
+            <td><?= htmlspecialchars($row['Rate']) ?></td>
+            <td><?= htmlspecialchars($row['TotalCost']) ?></td>
+            <td><?= htmlspecialchars($row['ResourceID']) ?></td>
+            <td><?= htmlspecialchars($row['ResourceName']) ?></td>
+            <td><?= htmlspecialchars($row['Grade']) ?></td>
+            <td>--</td>
+        </tr>
+        <?php endwhile; ?>
+    </table>
 
-<!-- Table -->
-<div class="table-container">
-    <div class="table-scroll-wrapper">
-        <table border="1" cellpadding="5" cellspacing="0">
-            <tr>
-                <th>Role</th>
-                <?php foreach ($monday_columns as $col) echo "<th>$col</th>"; ?>
-                <th>TotalEffort</th><th>Rate</th><th>TotalCost</th>
-                <th>ResourceID</th><th>ResourceName</th><th>Grade</th><th>Action</th>
-            </tr>
+    <script>
+    function calculateEffortAndCost() {
+        let inputs = document.querySelectorAll('.effort-input');
+        let total = 0;
+        inputs.forEach(input => {
+            let val = parseFloat(input.value);
+            if (!isNaN(val)) total += val;
+        });
 
-            <!-- Add Row -->
-            <?php if ($add_new): ?>
-                <form method="post"><tr>
-                    <td><input type="text" name="RoleName" required></td>
-                    <?php foreach ($monday_columns as $week): ?>
-                        <td><input type="number" step="0.01" name="date_<?= $week ?>" value="0"></td>
-                    <?php endforeach; ?>
-                    <td><input type="number" step="0.01" name="TotalEffort" value="0" readonly></td>
-                    <td><input type="number" step="0.01" name="Rate" required></td>
-                    <td><input type="number" step="0.01" name="TotalCost" value="0" readonly></td>
-                    <td><input type="text" name="ResourceID" required></td>
-                    <td><input type="text" name="ResourceName" required></td>
-                    <td>
-                        <select name="Grade" required>
-                            <option value="">--Select--</option>
-                            <option value="PM">PM</option>
-                            <option value="PAT">PAT</option>
-                            <option value="PA">PA</option>
-                            <option value="A">A</option>
-                        </select>
-                    </td>
-                    <td><button type="submit" name="save_new">Save</button></td>
-                </tr></form>
-            <?php endif; ?>
+        total = total * 5;
+        document.getElementById('totalEffort').value = total.toFixed(2);
 
-            <!-- Existing Rows -->
-            <?php while ($row = $result_page->fetch_assoc()): ?>
-                <?php if ($edit_row_id == $row['id']): ?>
-                    <form method="post"><tr>
-                        <input type="hidden" name="row_id" value="<?= $row['id'] ?>">
-                        <input type="hidden" name="ApplicationName" value="<?= $row['ApplicationName'] ?>">
-                        <td><input type="text" name="RoleName" value="<?= $row['RoleName'] ?>" required></td>
-                        <?php foreach ($monday_columns as $week):
-                            $col = $week_to_date[$week] ?? '';
-                            $val = $row[$col] ?? ''; ?>
-                            <td><input type="number" step="0.01" name="date_<?= $week ?>" value="<?= $val ?>"></td>
-                        <?php endforeach; ?>
-                        <td><input type="number" step="0.01" name="TotalEffort" value="<?= $row['TotalEffort'] ?>" readonly></td>
-                        <td><input type="number" step="0.01" name="Rate" value="<?= $row['Rate'] ?>" required></td>
-                        <td><input type="number" step="0.01" name="TotalCost" value="<?= $row['TotalCost'] ?>" readonly></td>
-                        <td><input type="text" name="ResourceID" value="<?= $row['ResourceID'] ?>" required></td>
-                        <td><input type="text" name="ResourceName" value="<?= $row['ResourceName'] ?>" required></td>
-                        <td>
-                            <select name="Grade" required>
-                                <option value="PM" <?= ($row['Grade'] == 'PM' ? 'selected' : '') ?>>PM</option>
-                                <option value="PAT" <?= ($row['Grade'] == 'PAT' ? 'selected' : '') ?>>PAT</option>
-                                <option value="PA" <?= ($row['Grade'] == 'PA' ? 'selected' : '') ?>>PA</option>
-                                <option value="A" <?= ($row['Grade'] == 'A' ? 'selected' : '') ?>>A</option>
-                            </select>
-                        </td>
-                        <td><button type="submit" name="save_edit">Save</button></td>
-                    </tr></form>
-                <?php else: ?>
-                    <tr>
-                        <td><?= $row['RoleName'] ?></td>
-                        <?php foreach ($monday_columns as $week):
-                            $col = $week_to_date[$week] ?? ''; ?>
-                            <td><?= $row[$col] ?? '' ?></td>
-                        <?php endforeach; ?>
-                        <td><?= $row['TotalEffort'] ?></td>
-                        <td><?= $row['Rate'] ?></td>
-                        <td><?= $row['TotalCost'] ?></td>
-                        <td><?= $row['ResourceID'] ?></td>
-                        <td><?= $row['ResourceName'] ?></td>
-                        <td><?= $row['Grade'] ?></td>
-                        <td>
-                            <form method="post" style="display:inline;">
-                                <input type="hidden" name="edit_row_id" value="<?= $row['id'] ?>">
-                                <button type="submit">Edit</button>
-                            </form>
-                            <form method="post" style="display:inline;">
-                                <input type="hidden" name="delete_row_id" value="<?= $row['id'] ?>">
-                                <button type="submit" name="delete_row" onclick="return confirm('Are you sure?');">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            <?php endwhile; ?>
-        </table>
-    </div>
-</div>
+        let rate = parseFloat(document.getElementById('rateInput').value);
+        if (!isNaN(rate)) {
+            document.getElementById('totalCost').value = (total * rate).toFixed(2);
+        }
+    }
 
-<script>
-function scrollTable(direction) {
-    var container = document.querySelector('.table-scroll-wrapper');
-    if (direction === 'left') container.scrollLeft = 0;
-    else if (direction === 'right') container.scrollLeft = container.scrollWidth;
-}
-</script>
-
-<?php include "partials/footer.php"; ?>
+    function fetchDetails(type, value, targetId) {
+        if (value === '') return;
+        let url = `fetch_details.php?type=${type}&${type === 'role' ? 'name' : 'id'}=${encodeURIComponent(value)}`;
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById(targetId).value = data.trim();
+                if (targetId === 'rateInput') calculateEffortAndCost();
+            });
+    }
+    </script>
+</body>
+</html>
